@@ -23,13 +23,13 @@ const theme: BaseTheme = {
     },
     title1: {
       fontSize: 28,
-      fontFamily: "SFProText-SemiBold",
+      fontFamily: "SFProText-Semibold",
       color: "title",
     },
     title2: {
       fontSize: 24,
       lineHeight: 30,
-      fontFamily: "SFProText-SemiBold",
+      fontFamily: "SFProText-Semibold",
       color: "title",
     },
     body: {
