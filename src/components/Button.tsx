@@ -1,3 +1,4 @@
+import { useTheme } from "@shopify/restyle";
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
@@ -23,9 +24,10 @@ interface ButtonProps {
   onPress: () => void;
 }
 
-const Button = ({ variant, label, onPress }: ButtonProps) => {
+const Button = ({ label, onPress, variant }: ButtonProps) => {
+  const theme = useTheme();
   const backgroundColor =
-    variant === "primary" ? "#0CB9B0" : "rgba(12, 13, 52, 0.85";
+    variant === "primary" ? theme.colors.primary : theme.colors.text;
   const color = variant === "primary" ? "white" : "#0C0D34";
   return (
     <RectButton

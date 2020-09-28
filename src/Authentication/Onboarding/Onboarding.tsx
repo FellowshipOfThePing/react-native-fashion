@@ -1,10 +1,10 @@
 import React, { useRef } from "react";
 import { Dimensions, View, StyleSheet, Animated } from "react-native";
 
-import Slide, { SLIDE_HEIGHT } from "./Slide";
+import Slide, { SLIDE_HEIGHT, BORDER_RADIUS } from "./Slide";
 import Subslide from "./Subslide";
+import Dot from "./Dot";
 
-const BORDER_RADIUS = 75;
 const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
@@ -21,9 +21,15 @@ const styles = StyleSheet.create({
   },
   footerContent: {
     flex: 1,
-    flexDirection: "row",
     backgroundColor: "white",
     borderTopLeftRadius: BORDER_RADIUS,
+  },
+  pagination: {
+    ...StyleSheet.absoluteFillObject,
+    height: BORDER_RADIUS,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
@@ -34,6 +40,7 @@ const slides = [
     description:
       "Confused about your outfit? Don't worry! Find the best outfit here!",
     color: "#BFEAF5",
+    picture: require("./assets/1.png"),
   },
   {
     title: "Playful",
@@ -41,6 +48,7 @@ const slides = [
     description:
       "Hating the clothes in your wardrobe? Explore hundreds of outfit ideas",
     color: "#BEECC4",
+    picture: require("./assets/2.png"),
   },
   {
     title: "Eccentric",
@@ -48,6 +56,7 @@ const slides = [
     description:
       "Create your individual & unique style and look amazing every day",
     color: "#FFE4D9",
+    picture: require("./assets/3.png"),
   },
   {
     title: "Funky",
@@ -55,12 +64,13 @@ const slides = [
     description:
       "Discover the latest trends in fashion and explore your personality",
     color: "#FFDDDD",
+    picture: require("./assets/4.png"),
   },
 ];
 
 const Onboarding = () => {
-  let x = new Animated.Value(0);
   const scroll = useRef<Animated.ScrollView>(null);
+  let x = new Animated.Value(0);
   const onScroll = Animated.event([{ nativeEvent: { contentOffset: { x } } }], {
     useNativeDriver: false,
   });
@@ -82,8 +92,8 @@ const Onboarding = () => {
           scrollEventThrottle={1}
           {...{ onScroll }}
         >
-          {slides.map(({ title }, index) => (
-            <Slide key={index} right={!!(index % 2)} {...{ title }} />
+          {slides.map(({ title, picture }, index) => (
+            <Slide key={index} right={!!(index % 2)} {...{ title, picture }} />
           ))}
         </Animated.ScrollView>
       </Animated.View>
@@ -91,32 +101,41 @@ const Onboarding = () => {
         <Animated.View
           style={{ ...StyleSheet.absoluteFillObject, backgroundColor }}
         />
-        <Animated.View
-          style={[
-            styles.footerContent,
-            {
-              width: width * slides.length,
+        <View style={styles.footerContent}>
+          <View style={styles.pagination}>
+            {slides.map((_, index) => (
+              <Dot
+                key={index}
+                currentIndex={Animated.divide(x, width)}
+                {...{ index, x }}
+              />
+            ))}
+          </View>
+          <Animated.View
+            style={{
               flex: 1,
+              flexDirection: "row",
+              width: width * slides.length,
               transform: [{ translateX: Animated.multiply(x, -1) }],
-            },
-          ]}
-        >
-          {slides.map(({ subtitle, description }, index) => (
-            <Subslide
-              key={index}
-              last={index === slides.length - 1}
-              {...{ subtitle, description }}
-              onPress={() => {
-                if (scroll.current) {
-                  scroll.current.scrollTo({
-                    x: width * (index + 1),
-                    animated: true,
-                  });
-                }
-              }}
-            />
-          ))}
-        </Animated.View>
+            }}
+          >
+            {slides.map(({ subtitle, description }, index) => (
+              <Subslide
+                key={index}
+                last={index === slides.length - 1}
+                {...{ subtitle, description }}
+                onPress={() => {
+                  if (scroll.current) {
+                    scroll.current.scrollTo({
+                      x: width * (index + 1),
+                      animated: true,
+                    });
+                  }
+                }}
+              />
+            ))}
+          </Animated.View>
+        </View>
       </View>
     </View>
   );
