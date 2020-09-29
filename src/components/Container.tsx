@@ -53,7 +53,7 @@ const Container = ({ children, footer }: ContainerProps) => {
           {children}
         </Box>
       </Box>
-      <Box backgroundColor="secondary" alignItems="center" paddingTop="m">
+      <Box backgroundColor="secondary" alignItems="center" paddingTop="l">
         {footer}
         <Box height={insets.bottom} />
       </Box>
