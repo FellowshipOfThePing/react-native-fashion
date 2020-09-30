@@ -1,9 +1,9 @@
 import React, { useRef } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { TextInput as RNTextInput } from "react-native";
 
 import { Routes, StackNavigationProps } from "../components/Navigation";
-
 import { Button, Container, Text } from "../components";
 import { Box } from "../components/Theme";
 import TextInput from "./components/Form";
@@ -33,8 +33,8 @@ const SignUp = ({ navigation }: StackNavigationProps<Routes, "SignUp">) => {
       onSubmit: (values) => console.log(values),
     }
   );
-  const password = useRef<typeof TextInput>(null);
-  const passwordConfirmation = useRef<typeof TextInput>(null);
+  const password = useRef<RNTextInput>(null);
+  const passwordConfirmation = useRef<RNTextInput>(null);
   const footer = (
     <Footer
       title="Already have an account?"
