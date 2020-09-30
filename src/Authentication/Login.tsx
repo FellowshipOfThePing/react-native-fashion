@@ -32,7 +32,7 @@ const Login = ({ navigation }: StackNavigationProps<Routes, "Login">) => {
     initialValues: { email: "", password: "", remember: false },
     onSubmit: (values) => console.log(values),
   });
-  const password = useRef<typeof RNTextInput>(null);
+  const password = useRef<RNTextInput>(null);
   const footer = (
     <Footer
       title="Don't have an account?"
