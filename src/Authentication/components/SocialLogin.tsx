@@ -58,7 +58,7 @@ const SocialIcon = ({ children }: SocialIconProps) => {
   const SIZE = theme.borderRadii.l * 2;
   return (
     <Box
-      marginHorizontal="s"
+      marginHorizontal="m"
       backgroundColor="white"
       height={SIZE}
       width={SIZE}
