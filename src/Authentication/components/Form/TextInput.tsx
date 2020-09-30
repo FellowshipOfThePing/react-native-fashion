@@ -6,28 +6,19 @@ import {
   TextInputProps as RNTextInputProps,
 } from "react-native";
 import { Feather as Icon } from "@expo/vector-icons";
-import { Box, theme } from "../../../components";
+import { Box, useTheme } from "../../../components";
 
 interface TextInputProps extends RNTextInputProps {
   icon: string;
-  validator?: (input: string) => boolean;
+  touched?: boolean;
+  error?: string;
 }
 
-const SIZE = theme.borderRadii.m * 2;
-const Valid = true;
-const Invalid = false;
-const Pristine = null;
-type InputState = typeof Valid | typeof Invalid | typeof Pristine;
-
-const TextInput = ({ icon, validator, ...props }: TextInputProps) => {
-  const [input, setInput] = useState("");
-  const [state, setState] = useState<InputState>(Pristine);
-  const reColor: keyof typeof theme.colors =
-    state === Pristine ? "text" : state === Valid ? "primary" : "danger";
+const TextInput = ({ icon, touched, error, ...props }: TextInputProps) => {
+  const theme = useTheme();
+  const SIZE = theme.borderRadii.m * 2;
+  const reColor = !touched ? "text" : error ? "danger" : "primary";
   const color = theme.colors[reColor];
-  const validate = () => {
-    return null;
-  };
   return (
     <Box
       flexDirection="row"
@@ -44,25 +35,20 @@ const TextInput = ({ icon, validator, ...props }: TextInputProps) => {
         <RNTextInput
           underlineColorAndroid="transparent"
           placeholderTextColor={color}
-          onBlur={validate}
-          onChangeText={(text) => setInput(text)}
           {...props}
         />
       </Box>
-      {(state === Valid || state === Invalid) && (
+      {touched && (
         <Box
           borderRadius="m"
           height={SIZE}
           width={SIZE}
           justifyContent="center"
           alignItems="center"
-          backgroundColor={state === Valid ? "primary" : "danger"}
+          backgroundColor={!error ? "primary" : "danger"}
+          marginRight="s"
         >
-          <Icon
-            name={state === Valid ? "check" : "x"}
-            color="white"
-            size={16}
-          />
+          <Icon name={!error ? "check" : "x"} color="white" size={16} />
         </Box>
       )}
     </Box>

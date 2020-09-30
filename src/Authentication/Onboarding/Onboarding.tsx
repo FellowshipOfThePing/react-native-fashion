@@ -1,15 +1,22 @@
 import React, { useRef } from "react";
-import { Dimensions, View, StyleSheet, Animated, Image } from "react-native";
+import {
+  Dimensions,
+  View,
+  StyleSheet,
+  Animated,
+  Image,
+} from "react-native";
 
 import Slide, { SLIDE_HEIGHT } from "./Slide";
 import Subslide from "./Subslide";
 import Dot from "./Dot";
-import { theme } from "../../components";
+import { useTheme } from "../../components";
+import { Theme, makeStyles } from "../../components/Theme";
 import { Routes, StackNavigationProps } from "../../components/Navigation";
 
 const { width } = Dimensions.get("window");
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme: Theme) => ({
   container: {
     flex: 1,
     backgroundColor: "white",
@@ -40,7 +47,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: theme.borderRadii.xl,
     overflow: "hidden",
   },
-});
+}));
 
 const slides = [
   {
@@ -97,6 +104,8 @@ export const assets = slides.map((slide) => slide.picture.src);
 const Onboarding = ({
   navigation,
 }: StackNavigationProps<Routes, "Onboarding">) => {
+  const styles = useStyles();
+  const theme = useTheme();
   const scroll = useRef(null);
   let x = new Animated.Value(0);
   const onScroll = Animated.event([{ nativeEvent: { contentOffset: { x } } }], {
